@@ -18,7 +18,7 @@ func workHandler(w http.ResponseWriter, r *http.Request) {
 	time.Sleep(500 * time.Millisecond)
 
 	hostname, _ := os.Hostname()
-	response := fmt.Sprintf("Work done by pod: %s\n", hostname)
+	response := fmt.Sprintf("Work done by pod : %s\n", hostname)
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(response))
