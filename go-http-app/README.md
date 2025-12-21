@@ -4,21 +4,20 @@ This lab demonstrates a simple Go HTTP service scaled by KEDA using HTTP-based a
 
 ## 1. Go HTTP Service
 
-The Go app lives in `go-http-app/` and exposes two endpoints:
+The Go app lives in this directory and exposes two endpoints:
 
 - `GET /health` – basic health check
 - `GET /work` – simulates work (500ms delay) and returns the pod hostname
 
-Main file: `go-http-app/main.go`.
+Main file: `main.go`.
 
 ## 2. Building the Docker Image
 
-The app is containerized with a multi-stage Dockerfile in `go-http-app/Dockerfile`.
+The app is containerized with a multi-stage Dockerfile in `Dockerfile`.
 
-To build the image locally:
+To build the image locally (from this directory):
 
 ```bash
-cd go-http-app
 # Build image tagged go-http-app:1.0
 docker build -t go-http-app:1.0 .
 ```
@@ -33,7 +32,6 @@ eval $(minikube docker-env)
 After this, rebuild the image (so it is available inside Minikube’s Docker daemon):
 
 ```bash
-cd go-http-app
 docker build -t go-http-app:1.0 .
 ```
 
@@ -47,7 +45,7 @@ helm repo update
 helm install keda keda/keda --namespace keda --create-namespace
 ```
 
-Then apply the KEDA HTTP add-on configuration provided in `keda-2.18.2.yaml` at the repo root:
+Then apply the KEDA HTTP add-on configuration provided in `keda-2.18.2.yaml` in this directory:
 
 ```bash
 kubectl apply --server-side -f keda-2.18.2.yaml
@@ -57,16 +55,16 @@ Wait until all KEDA components and HTTP add-on pods are running before proceedin
 
 ## 5. Kubernetes Manifests
 
-Kubernetes manifests for the Go app are in `go-http-app/k8s/`:
+Kubernetes manifests for the Go app are in `k8s/`:
 
 - `deployment.yaml` – Deployment for the Go service (image `go-http-app:1.0`, `imagePullPolicy: IfNotPresent`).
 - `service.yaml` – Service exposing the deployment.
 - `HTTPScaledObject.yaml` – KEDA HTTP ScaledObject for autoscaling based on HTTP traffic.
 
-Apply them from the `go-http-app/k8s/` directory:
+Apply them from the `k8s/` directory:
 
 ```bash
-cd go-http-app/k8s
+cd k8s
 kubectl apply --server-side -f .
 ```
 
@@ -94,7 +92,7 @@ wait
 - `Host: go-http.local` – host header that KEDA HTTP uses to route traffic.
 - `http://localhost:8081/work` – hits the `/work` endpoint via the interceptor proxy.
 
-Alternatively, you can use the helper script at the repo root:
+Alternatively, you can use the helper script in this directory:
 
 ```bash
 chmod +x send_requests.sh
@@ -110,11 +108,11 @@ As load increases, KEDA should scale the Go HTTP deployment based on the configu
 To remove the resources created by this lab:
 
 ```bash
-# From go-http-app/k8s
+# From k8s
 kubectl delete -f .
 
-# From repo root
-kubectl delete -f keda-2.18.2.yaml
+# From go-http-app (this directory)
+kubectl delete -f ../go-http-app/keda-2.18.2.yaml
 ```
 
 This returns the cluster to a clean state.
