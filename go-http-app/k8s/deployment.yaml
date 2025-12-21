@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: go-http
+  name: go-http
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-http
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: go-http
+    spec:
+      containers:
+      - image: go-http-app:1.0
+        imagePullPolicy: IfNotPresent
+        name: go-http-app
+        resources: {}
+status: {}
