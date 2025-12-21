@@ -1,13 +1,9 @@
 #!/bin/bash
 
-URL="http://localhost:8081/work"
-HOST_HEADER="go-http.local"
-REQUESTS=1000
+echo "Sending 1000 requests to KEDA HTTP proxy..."
 
-echo "Sending $REQUESTS requests to KEDA HTTP proxy..."
-
-for i in $(seq 1 $REQUESTS); do
-  curl -s -H "Host: $HOST_HEADER" "$URL" > /dev/null &
+for i in {1..1000}; do
+  curl -s -H "Host: go-http.local" http://localhost:8081/work > /dev/null &
 done
 
 wait
