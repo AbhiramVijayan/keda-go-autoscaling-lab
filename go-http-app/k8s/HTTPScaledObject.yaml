@@ -1,0 +1,22 @@
+kind: HTTPScaledObject
+apiVersion: http.keda.sh/v1alpha1
+metadata:
+    name: go-http-app-scaledobject
+    namespace: default
+spec:
+    hosts:
+      - go-http.local
+    targetPendingRequests: 2
+    scaleTargetRef:
+        name: go-http
+        service: go-http
+        port: 8080
+    replicas:
+        min: 0
+        max: 10
+    scaledownPeriod: 10
+    scalingMetric:
+        requestRate:
+            granularity: 1s
+            targetValue: 100
+            window: 1m

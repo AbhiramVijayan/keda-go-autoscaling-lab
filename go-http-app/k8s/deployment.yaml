@@ -19,9 +19,11 @@ spec:
     spec:
       containers:
       - image: go-http-app:1.0
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: IfNotPresent 
         name: go-http-app
         ports:
           - containerPort: 8080
         resources: {}
 status: {}
+# eval $(minikube docker-env)
+# kubectl apply --server-side -f .
