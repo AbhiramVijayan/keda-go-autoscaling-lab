@@ -5,7 +5,6 @@ FROM golang:1.24-alpine AS builder
 
 WORKDIR /app
 
-# Enable Go modules and download dependencies first (better layer caching)
 COPY go.mod ./
 RUN go mod download
 
