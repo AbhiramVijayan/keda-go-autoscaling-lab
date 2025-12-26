@@ -3,8 +3,10 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/AbhiramVijayan/order-producer/internal/handlers"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -16,11 +18,18 @@ func main() {
 	mux.HandleFunc("/health", handlers.HealthCheckHandler)
 
 	// Create HTTP server
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found")
+	}
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 	server := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":" + port,
 		Handler: mux,
 	}
 
-	log.Println("🚀 Order Producer API listening on port 8080")
+	log.Println("🚀 Order Producer API listening on port " + port)
 	log.Fatal(server.ListenAndServe())
 }
